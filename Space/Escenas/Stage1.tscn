@@ -1,0 +1,24 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://Escenas/Player.tscn" type="PackedScene" id=1]
+[ext_resource path="res://Juego/background.png" type="Texture" id=2]
+[ext_resource path="res://Escenas/Asteroide.tscn" type="PackedScene" id=3]
+[ext_resource path="res://Scripts/Stage1.gd" type="Script" id=4]
+
+[node name="Stage1" type="Node2D"]
+script = ExtResource( 4 )
+
+[node name="Sprite" type="Sprite" parent="."]
+position = Vector2( -11.0244, -0.185068 )
+texture = ExtResource( 2 )
+centered = false
+
+[node name="Player" parent="." instance=ExtResource( 1 )]
+position = Vector2( 19.9823, 80.8604 )
+
+[node name="Asteroidspawn" type="Timer" parent="."]
+
+[node name="Asteroide" parent="." instance=ExtResource( 3 )]
+position = Vector2( 353.408, 84.0998 )
+
+[connection signal="timeout" from="Asteroidspawn" to="." method="_on_Asteroidspawn_timeout"]

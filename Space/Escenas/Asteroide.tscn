@@ -1,0 +1,51 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://Juego/asteroid2.png" type="Texture" id=1]
+[ext_resource path="res://Juego/asteroid1.png" type="Texture" id=2]
+
+[sub_resource type="GDScript" id=1]
+script/source = "extends Area2D
+
+const MOVE_SPEED = 100.0
+var ExplosionEscenas = preload(\"res://Escenas/Explosion.tscn\")
+
+func _process(delta):
+	position -= Vector2(MOVE_SPEED * delta, 0)
+	if position.x <-100:
+		queue_free()
+
+
+
+func _on_Asteroide_area_entered(area):
+	if area.is_in_group (\"Bala\"):
+		var explosion_instance = ExplosionEscenas.instance()
+		explosion_instance.position = position
+		get_parent().add_child(explosion_instance)
+		queue_free()
+"
+
+[sub_resource type="CircleShape2D" id=2]
+radius = 8.56721
+
+[sub_resource type="SpriteFrames" id=3]
+animations = [ {
+"frames": [ ExtResource( 2 ), ExtResource( 1 ) ],
+"loop": true,
+"name": "default",
+"speed": 2.0
+} ]
+
+[node name="Asteroide" type="Area2D" groups=[
+"asteroide",
+]]
+script = SubResource( 1 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+shape = SubResource( 2 )
+
+[node name="AnimatedSprite" type="AnimatedSprite" parent="."]
+position = Vector2( 0, -0.5 )
+frames = SubResource( 3 )
+playing = true
+
+[connection signal="area_entered" from="." to="." method="_on_Asteroide_area_entered"]
